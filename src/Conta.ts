@@ -1,7 +1,13 @@
 export default class Conta {
-  constructor(readonly conta_id: number, readonly valor: number) {}
+  conta_id?: number
+  valor?: number
+  
+  private constructor() {}
 
-  obterSaldo() {
-    return this.valor
+  static criar(conta_id: number, valor: number) {
+    const conta = new Conta()
+    conta.conta_id = conta_id
+    conta.valor = valor
+    return conta
   }
 }
