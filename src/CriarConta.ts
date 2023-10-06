@@ -6,8 +6,7 @@ export default class CriarConta {
 
   async execute(conta_id: number, valor: number) {    
     const conta = Conta.criar(conta_id, valor)
-    await this.contaDAO.criarConta(conta)
-    const saldo = conta.calcularSaldo()
-    return { conta_id, saldo }
+    await this.contaDAO.criarConta(conta)    
+    return { conta_id, saldo: valor }
   }
 }
