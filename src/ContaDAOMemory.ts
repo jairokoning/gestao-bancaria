@@ -10,8 +10,8 @@ export default class ContaDAOMemory implements ContaDAO {
     this.contas.push(conta)
   }
 
-  async buscarConta(conta_id: number): Promise<Conta | undefined> {
-    const conta = this.contas.find(conta => conta.conta_id === conta_id)
+  async buscarConta(conta_id: number): Promise<any> {
+    const conta = this.contas.filter(conta => conta.conta_id === conta_id)
     return conta
   }
 }
