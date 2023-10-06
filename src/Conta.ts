@@ -1,8 +1,8 @@
 import Transacao from "./Transacao"
 
 export default class Conta {
-  conta_id?: number
-  valor?: number
+  conta_id!: number
+  valor!: number
   
   private constructor() {}
 
@@ -13,8 +13,8 @@ export default class Conta {
     return conta
   }
 
-  static calcularSaldo(valorConta: number, transacoes: Transacao[]) {    
-    const valorTotalTransacoes = Transacao.somarValor(transacoes)
+  static calcularSaldo(valorConta: number, transacoes: Transacao[]) {
+    const valorTotalTransacoes = Transacao.somarValor(transacoes)    
     return valorConta - valorTotalTransacoes
   }
 }
