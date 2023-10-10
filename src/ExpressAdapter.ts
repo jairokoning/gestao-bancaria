@@ -1,6 +1,6 @@
 import express from "express";
 import HttpServer from "./HttpServer";
-
+import { AppError } from "./AppError";
 export default class ExpressAdapter implements HttpServer {
   app: any
 
@@ -10,10 +10,18 @@ export default class ExpressAdapter implements HttpServer {
   }
 
   async register(method: string, url: string, callback: Function): Promise<void> {
-		this.app[method](url, async function (req: any, res: any) {
-			const output = await callback(req.params, req.body);
-			res.json(output);
-		});
+		this.app[method](url, async function (req: any, res: any) {			
+      try {
+				const { httpStatus, output } = await callback(req.params, req.body, req.query);              
+			  res.status(httpStatus).json(output);
+			} catch (error: any) {
+        if (error instanceof AppError) {          
+          res.status(error.statusCode).send(error.message);
+        } else {           
+          res.status(error.statusCode).send(error.message);
+        }
+			}
+		});      
 	}
 
   async listen(port: number): Promise<void> {
