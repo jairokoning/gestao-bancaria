@@ -1,3 +1,4 @@
+import CalculadoraTaxaTransacaoFactory from "./CalculadoraTaxaTransacaoFactory";
 import Conta from "./Conta"
 import ContaDAO from "./ContaDAO";
 import { NotFoundError } from "./NotFoundError";
@@ -12,11 +13,13 @@ export default class CriarTransacao {
     const conta = await this.contaDAO.buscarConta(conta_id)    
     if (!conta[0]) throw new NotFoundError("Conta não existe")
     const saldo = Conta.calcularSaldo(conta[0].valor, transacoes)
-    if (valor > saldo) {
+    const valorTaxaTransacao = CalculadoraTaxaTransacaoFactory.create(forma_pagamento as any).calcular(valor)
+    const valorComTaxa = valor + valorTaxaTransacao
+    if (valorComTaxa > saldo) {
       throw new NotFoundError("Saldo insuficiente")      
     }
-    const transacao = Transacao.criar(forma_pagamento, conta_id, valor)
+    const transacao = Transacao.criar(forma_pagamento, conta_id, valorComTaxa)
     await this.transacaoDAO.criarTransacao(transacao)
-    return { conta_id, saldo: saldo - valor }
+    return { conta_id, saldo: saldo - valorComTaxa }
   }
 }

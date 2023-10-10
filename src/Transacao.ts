@@ -16,7 +16,7 @@ export default class Transacao {
 
   static somarValor(transacoes: Transacao[]) {
     const valorTotal = transacoes.reduce((total, transacao) => {
-      return total += transacao.valor
+      return total += Number(transacao.valor)
     }, 0);
     return valorTotal
   }

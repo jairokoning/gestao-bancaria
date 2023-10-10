@@ -3,8 +3,6 @@ import { BadRequestError } from "./BadRequestError"
 import Transacao from "./Transacao"
 
 export default class Conta {
-  // conta_id!: number
-  // valor!: number
   
   constructor(readonly conta_id: number, readonly valor: number) {
     this.validarDados()
@@ -16,7 +14,7 @@ export default class Conta {
   }
 
   static calcularSaldo(valorConta: number, transacoes: Transacao[]) {
-    const valorTotalTransacoes = Transacao.somarValor(transacoes)    
+    const valorTotalTransacoes = Transacao.somarValor(transacoes)
     return valorConta - valorTotalTransacoes
   }
 
