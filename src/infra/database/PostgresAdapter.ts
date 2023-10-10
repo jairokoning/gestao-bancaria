@@ -1,5 +1,5 @@
-import Connection from "./Connection";
 import pgp from "pg-promise";
+import Connection from "./Connection";
 
 export default class PostgresAdapter implements Connection {
 	connection: any;

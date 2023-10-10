@@ -1,6 +1,6 @@
-import Connection from "./Connection";
-import Transacao from "./Transacao";
-import TransacaoDAO from "./TransacaoDAO";
+import TransacaoDAO from "../../application/dao/TransacaoDAO";
+import Transacao from "../../domain/Transacao";
+import Connection from "../database/Connection";
 
 export default class TransacaoDAOPostgres implements TransacaoDAO {
   constructor (readonly connection: Connection) {}  

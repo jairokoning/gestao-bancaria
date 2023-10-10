@@ -1,5 +1,4 @@
-
-import BuscarConta from "./BuscarConta";
+import BuscarConta from "../../application/usecase/BuscarConta";
 import HttpServer from "./HttpServer";
 
 export default class CriarContaController {
@@ -7,7 +6,7 @@ export default class CriarContaController {
     readonly httpServer: HttpServer,
     readonly criarConta: BuscarConta
   ) {
-    httpServer.register("get", "/conta", async function(params: any, body: any, query: any) {
+    httpServer.register("get", "/conta", async function(params: any, body: any, query: any) {      
       const output = await criarConta.execute(query.id)
       return { httpStatus: 200, output};
     })

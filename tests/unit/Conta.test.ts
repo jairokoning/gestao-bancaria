@@ -1,4 +1,4 @@
-import Conta from "../src/Conta"
+import Conta from "../../src/domain/Conta"
 
 describe("Conta | Testes Unitários", () => {
   test("Deve criar uma nova conta bancária", () => {

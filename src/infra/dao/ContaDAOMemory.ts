@@ -1,5 +1,5 @@
-import Conta from "./Conta";
-import ContaDAO from "./ContaDAO";
+import ContaDAO from "../../application/dao/ContaDAO"
+import Conta from "../../domain/Conta"
 
 export default class ContaDAOMemory implements ContaDAO {
   contas: Conta[] = []

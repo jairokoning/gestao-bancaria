@@ -1,4 +1,4 @@
-import Transacao from "./Transacao";
+import Transacao from "../../domain/Transacao"
 
 export default interface ContaDAO {
   criarTransacao(transacao: Transacao): Promise<void>

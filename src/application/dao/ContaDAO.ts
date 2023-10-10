@@ -1,4 +1,4 @@
-import Conta from "./Conta";
+import Conta from "../../domain/Conta"
 
 export default interface ContaDAO {
   criarConta(conta: Conta): Promise<void>

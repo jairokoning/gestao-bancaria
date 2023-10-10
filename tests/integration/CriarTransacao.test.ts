@@ -1,13 +1,13 @@
-import TransacaoDAOMemory from '../src/TransacaoDAOMemory'
-import ContaDAOMemory from '../src/ContaDAOMemory'
-import CriarTransacao from '../src/CriarTransacao'
-import { IFormaPagamento } from '../src/Transacao'
-import Conta from '../src/Conta'
-import CalculadoraTaxaTransacaoCredito from '../src/CalculadoraTaxaTransacaoCredito'
-import CalculadoraTaxaTransacaoDebito from '../src/CalculadoraTaxaTransacaoDebito'
-import CalculadoraTaxaTransacaoPix from '../src/CalculadoraTaxaTransacaoPix'
+import TransacaoDAOMemory from '../../src/infra/dao/TransacaoDAOMemory'
+import ContaDAOMemory from '../../src/infra/dao/ContaDAOMemory'
+import CriarTransacao from '../../src/application/usecase/CriarTransacao'
+import { IFormaPagamento } from '../../src/domain/Transacao'
+import Conta from '../../src/domain/Conta'
+import CalculadoraTaxaTransacaoCredito from '../../src/domain/CalculadoraTaxaTransacaoCredito'
+import CalculadoraTaxaTransacaoDebito from '../../src/domain/CalculadoraTaxaTransacaoDebito'
+import CalculadoraTaxaTransacaoPix from '../../src/domain/CalculadoraTaxaTransacaoPix'
 
-describe("Test CriarTransacao usecase", () => {
+describe("Criar Transação | Teste de integração (usecase)", () => {
   test("Deve criar uma nova transacao com forma de pagamento PIX", async () => {
     const valorTransacao = 25
     const valorSaldoInicialConta = 500

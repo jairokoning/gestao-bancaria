@@ -1,6 +1,6 @@
-import { ConflictError } from "./ConflictError";
-import Conta from "./Conta";
-import ContaDAO from "./ContaDAO";
+import ConflictError from "../../domain/ConflictError"
+import Conta from "../../domain/Conta"
+import ContaDAO from "../dao/ContaDAO"
 
 export default class CriarConta {
   constructor(readonly contaDAO: ContaDAO) {}

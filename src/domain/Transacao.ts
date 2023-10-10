@@ -1,4 +1,4 @@
-import { BadRequestError } from "./BadRequestError"
+import BadRequestError from "./BadRequestError"
 
 export type IFormaPagamento = {
   forma_pagamento: "P" | "C" | "D"

@@ -1,8 +1,8 @@
 import axios from "axios"
 import pgp from 'pg-promise'
-import CalculadoraTaxaTransacaoCredito from '../src/CalculadoraTaxaTransacaoCredito'
-import CalculadoraTaxaTransacaoDebito from '../src/CalculadoraTaxaTransacaoDebito'
-import CalculadoraTaxaTransacaoPix from '../src/CalculadoraTaxaTransacaoPix'
+import CalculadoraTaxaTransacaoCredito from '../../src/domain/CalculadoraTaxaTransacaoCredito'
+import CalculadoraTaxaTransacaoDebito from '../../src/domain/CalculadoraTaxaTransacaoDebito'
+import CalculadoraTaxaTransacaoPix from '../../src/domain/CalculadoraTaxaTransacaoPix'
 
 axios.defaults.validateStatus = function () {
 	return true;
@@ -30,7 +30,7 @@ async function resetDatabase() {
 
 const CONTA_ID_PADRAO = 4477
 
-describe('Testes de integração (API) | Conta', () => {
+describe('API | Testes de integração da Conta', () => {
   beforeAll(async () => {
     await resetDatabase()
   })
@@ -69,7 +69,7 @@ describe('Testes de integração (API) | Conta', () => {
 
   test("Deve validar o número da conta não permitindo a criação da conta se número < 1", async () => {    
     const input = {
-      conta_id: 1,
+      conta_id: 0,
       valor: 100
     }
     const response = await axios.post("http://localhost:3333/conta", input)    
@@ -90,7 +90,6 @@ describe('Testes de integração (API) | Conta', () => {
         valor: 479.99
       }
     )
-
     const response = await axios.get("http://localhost:3333/conta", { params: { id: conta_id }})    
     expect(response.data.conta_id).toBe("3333")
     expect(response.data.saldo).toBe(520.01)  
@@ -104,7 +103,7 @@ describe('Testes de integração (API) | Conta', () => {
   })
 })
 
-describe("Testes de integração (API) | Transação", () => {  
+describe("API | Testes de integração da Transação", () => {  
   test("Deve criar uma nova transacao com forma de pagamento PIX", async () => {
     const conta = await axios.get("http://localhost:3333/conta", { params: { id: CONTA_ID_PADRAO }})
     const valorTransacao = 2.99

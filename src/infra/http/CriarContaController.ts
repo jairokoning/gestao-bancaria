@@ -1,4 +1,4 @@
-import CriarConta from "./CriarConta";
+import CriarConta from "../../application/usecase/CriarConta";
 import HttpServer from "./HttpServer";
 
 export default class CriarContaController {

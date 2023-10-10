@@ -1,9 +1,10 @@
-import CalculadoraTaxaTransacaoFactory from "./CalculadoraTaxaTransacaoFactory";
-import Conta from "./Conta"
-import ContaDAO from "./ContaDAO";
-import { NotFoundError } from "./NotFoundError";
-import Transacao, { IFormaPagamento } from "./Transacao";
-import TransacaoDAO from "./TransacaoDAO";
+import CalculadoraTaxaTransacaoFactory from "../../domain/CalculadoraTaxaTransacaoFactory"
+import Conta from "../../domain/Conta"
+import NotFoundError from "../../domain/NotFoundError"
+import Transacao, { IFormaPagamento } from "../../domain/Transacao"
+import ContaDAO from "../dao/ContaDAO"
+import TransacaoDAO from "../dao/TransacaoDAO"
+
 
 export default class CriarTransacao {
   constructor(readonly transacaoDAO: TransacaoDAO, readonly contaDAO: ContaDAO) {}

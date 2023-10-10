@@ -1,8 +1,8 @@
-import CalculadoraTaxaTransacaoPix from '../src/CalculadoraTaxaTransacaoPix'
-import CalculadoraTaxaTransacaoCredito from '../src/CalculadoraTaxaTransacaoCredito'
-import CalculadoraTaxaTransacaoDebito from '../src/CalculadoraTaxaTransacaoDebito'
+import CalculadoraTaxaTransacaoPix from '../../src/domain/CalculadoraTaxaTransacaoPix'
+import CalculadoraTaxaTransacaoCredito from '../../src/domain/CalculadoraTaxaTransacaoCredito'
+import CalculadoraTaxaTransacaoDebito from '../../src/domain/CalculadoraTaxaTransacaoDebito'
 
-describe("CalculadoraTaxaTransacao | Testes unitários", () => {
+describe("Calculadora de taxa da transação | Testes unitários", () => {
   test("Deve calcular a taxa de uma transação PIX", () => {
     const valorTransacao = 180
     const calculadoraTaxa = new CalculadoraTaxaTransacaoPix()    

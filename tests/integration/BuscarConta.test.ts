@@ -1,9 +1,9 @@
-import BuscarConta from '../src/BuscarConta'
-import ContaDAOMemory from '../src/ContaDAOMemory'
-import Conta from '../src/Conta'
-import TransacaoDAOMemory from '../src/TransacaoDAOMemory'
+import BuscarConta from '../../src/application/usecase/BuscarConta'
+import ContaDAOMemory from '../../src/infra/dao/ContaDAOMemory'
+import Conta from '../../src/domain/Conta'
+import TransacaoDAOMemory from '../../src/infra/dao/TransacaoDAOMemory'
 
-describe("Buscar Conta | Testes de integração (usecase BuscarConta)", () => {
+describe("Buscar Conta | Testes de integração (usecase)", () => {
   test("Deve buscar uma conta", async () => {
     const contaDAO = new ContaDAOMemory()
     const transacaoDAO = new TransacaoDAOMemory()

@@ -1,5 +1,5 @@
-import Transacao from "./Transacao"
-import TransacaoDAO from "./TransacaoDAO"
+import TransacaoDAO from "../../application/dao/TransacaoDAO"
+import Transacao from "../../domain/Transacao"
 
 export default class TransacaoDAOMemory implements TransacaoDAO {
   transacoes: Transacao[] = []

@@ -1,13 +1,13 @@
-import CriarContaController from "./CriarContaController"
-import ContaDAOPostgres from "./ContaDAOPostgres"
-import CriarConta from "./CriarConta"
-import CriarTransacao from "./CriarTransacao"
-import ExpressAdapter from "./ExpressAdapter"
-import PostgresAdapter from "./PostgresAdapter"
-import CriarTransacaoController from "./CriarTransacaoController"
-import TransacaoDAOPostgres from "./TransacaoDAOPostgres"
-import BuscarConta from "./BuscarConta"
-import BuscarContaController from "./BuscarContaController"
+import BuscarConta from "./application/usecase/BuscarConta"
+import CriarConta from "./application/usecase/CriarConta"
+import CriarTransacao from "./application/usecase/CriarTransacao"
+import ContaDAOPostgres from "./infra/dao/ContaDAOPostgres"
+import TransacaoDAOPostgres from "./infra/dao/TransacaoDAOPostgres"
+import PostgresAdapter from "./infra/database/PostgresAdapter"
+import BuscarContaController from "./infra/http/BuscarContaController"
+import CriarContaController from "./infra/http/CriarContaController"
+import CriarTransacaoController from "./infra/http/CriarTransacaoController"
+import ExpressAdapter from "./infra/http/ExpressAdapter"
 
 const connection = new PostgresAdapter()
 const httpServer = new ExpressAdapter()

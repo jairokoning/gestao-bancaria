@@ -1,4 +1,4 @@
-import CriarTransacao from "./CriarTransacao";
+import CriarTransacao from "../../application/usecase/CriarTransacao";
 import HttpServer from "./HttpServer";
 
 export default class CriarTransacaoController {

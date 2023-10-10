@@ -1,4 +1,4 @@
-import { BadRequestError } from "./BadRequestError";
+import BadRequestError from "./BadRequestError";
 import CalculadoraTaxaTransacao from "./CalculadoraTaxaTransacao";
 import CalculadoraTaxaTransacaoCredito from "./CalculadoraTaxaTransacaoCredito";
 import CalculadoraTaxaTransacaoDebito from "./CalculadoraTaxaTransacaoDebito";

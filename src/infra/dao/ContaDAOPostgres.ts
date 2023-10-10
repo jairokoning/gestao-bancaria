@@ -1,6 +1,6 @@
-import Connection from "./Connection";
-import Conta from "./Conta";
-import ContaDAO from "./ContaDAO";
+import ContaDAO from "../../application/dao/ContaDAO";
+import Conta from "../../domain/Conta";
+import Connection from "../database/Connection";
 
 export default class ContaDAOPostgres implements ContaDAO {
 
