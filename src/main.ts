@@ -4,7 +4,7 @@ import CriarConta from "./CriarConta"
 import CriarTransacao from "./CriarTransacao"
 import ExpressAdapter from "./ExpressAdapter"
 import PostgresAdapter from "./PostgresAdapter"
-import TransacaoController from "./TransacaoController"
+import CriarTransacaoController from "./CriarTransacaoController"
 import TransacaoDAOPostgres from "./TransacaoDAOPostgres"
 import BuscarConta from "./BuscarConta"
 import BuscarContaController from "./BuscarContaController"
@@ -21,5 +21,5 @@ const criarTransacao = new CriarTransacao(transacaoDAO, contaDAO)
 
 new CriarContaController(httpServer, criarConta)
 new BuscarContaController(httpServer, buscarConta)
-new TransacaoController(httpServer, criarTransacao)
+new CriarTransacaoController(httpServer, criarTransacao)
 httpServer.listen(3333)

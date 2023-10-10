@@ -1,14 +1,14 @@
 import CriarConta from "./CriarConta";
 import HttpServer from "./HttpServer";
 
-export default class ContaController {
+export default class CriarContaController {
   constructor (
     readonly httpServer: HttpServer,
     readonly criarConta: CriarConta
   ) {
     httpServer.register("post", "/conta", async function(parms: any, body: any) {     
-      const output = await criarConta.execute(body.data.conta_id, body.data.valor)
-      return output;
+      const output = await criarConta.execute(body.conta_id, body.valor)
+      return { httpStatus: 201, output};
     })
   }
 }
