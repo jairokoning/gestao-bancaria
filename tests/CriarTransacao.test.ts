@@ -3,17 +3,53 @@ import ContaDAOMemory from '../src/ContaDAOMemory'
 import CriarTransacao from '../src/CriarTransacao'
 import { IFormaPagamento } from '../src/Transacao'
 import Conta from '../src/Conta'
-
-
+import CalculadoraTaxaTransacaoCredito from '../src/CalculadoraTaxaTransacaoCredito'
+import CalculadoraTaxaTransacaoDebito from '../src/CalculadoraTaxaTransacaoDebito'
+import CalculadoraTaxaTransacaoPix from '../src/CalculadoraTaxaTransacaoPix'
 
 describe("Test CriarTransacao usecase", () => {
   test("Deve criar uma nova transacao com forma de pagamento PIX", async () => {
+    const valorTransacao = 25
+    const valorSaldoInicialConta = 500
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoPix()
     const contaDAO = new ContaDAOMemory()
-    await contaDAO.criarConta({ conta_id: 1991, valor: 500 } as Conta)
+    await contaDAO.criarConta({ conta_id: 1991, valor: valorSaldoInicialConta } as Conta)
     const transacaoDAO = new TransacaoDAOMemory()    
     const transacao = new CriarTransacao(transacaoDAO, contaDAO)
-    const output = await transacao.execute("P" as unknown as IFormaPagamento, 1991, 25)
-    expect(output.saldo).toBe(475)
+    const output = await transacao.execute("P" as any, 1991, valorTransacao)
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_PIX / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - valorTransacao - valorTaxaTransacao
+    expect(output.saldo).toBe(valorSaldoFinalConta)
+    expect(output.conta_id).toBe(1991)
+  })
+
+  test("Deve criar uma nova transacao com forma de pagamento CREDITO aplicando a taxa de transacao", async () => {
+    const valorTransacao = 25
+    const valorSaldoInicialConta = 500
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoCredito()
+    const contaDAO = new ContaDAOMemory()
+    await contaDAO.criarConta({ conta_id: 1991, valor: valorSaldoInicialConta } as Conta)
+    const transacaoDAO = new TransacaoDAOMemory()    
+    const transacao = new CriarTransacao(transacaoDAO, contaDAO)
+    const output = await transacao.execute("C" as any, 1991, valorTransacao)
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_CREDITO / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - valorTransacao - valorTaxaTransacao
+    expect(output.saldo).toBe(valorSaldoFinalConta)
+    expect(output.conta_id).toBe(1991)
+  })
+
+  test("Deve criar uma nova transacao com forma de pagamento DEBITO aplicando a taxa de transacao", async () => {
+    const valorTransacao = 25
+    const valorSaldoInicialConta = 500
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoDebito()
+    const contaDAO = new ContaDAOMemory()
+    await contaDAO.criarConta({ conta_id: 1991, valor: valorSaldoInicialConta } as Conta)
+    const transacaoDAO = new TransacaoDAOMemory()    
+    const transacao = new CriarTransacao(transacaoDAO, contaDAO)
+    const output = await transacao.execute("D" as any, 1991, valorTransacao)
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_DEBITO / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - valorTransacao - valorTaxaTransacao
+    expect(output.saldo).toBe(valorSaldoFinalConta)
     expect(output.conta_id).toBe(1991)
   })
 

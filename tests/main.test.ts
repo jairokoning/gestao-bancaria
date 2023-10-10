@@ -1,5 +1,8 @@
 import axios from "axios"
 import pgp from 'pg-promise'
+import CalculadoraTaxaTransacaoCredito from '../src/CalculadoraTaxaTransacaoCredito'
+import CalculadoraTaxaTransacaoDebito from '../src/CalculadoraTaxaTransacaoDebito'
+import CalculadoraTaxaTransacaoPix from '../src/CalculadoraTaxaTransacaoPix'
 
 axios.defaults.validateStatus = function () {
 	return true;
@@ -25,6 +28,8 @@ async function resetDatabase() {
 	await connection.$pool.end()
 }
 
+const CONTA_ID_PADRAO = 4477
+
 describe('Testes de integração (API) | Conta', () => {
   beforeAll(async () => {
     await resetDatabase()
@@ -33,7 +38,7 @@ describe('Testes de integração (API) | Conta', () => {
   test("Deve criar uma nova conta bancária com saldo inicial de R$500", async () => {
     const response = await axios.post("http://localhost:3333/conta", 
       {
-        conta_id: 4477,
+        conta_id: CONTA_ID_PADRAO,
         valor: 500
       }
     )
@@ -44,7 +49,7 @@ describe('Testes de integração (API) | Conta', () => {
 
   test("Deve lançar 409 se conta já estiver cadastrada", async () => {    
     const input = {
-      conta_id: 4477,
+      conta_id: CONTA_ID_PADRAO,
       valor: 500
     }
     const response = await axios.post("http://localhost:3333/conta", input)    
@@ -99,25 +104,71 @@ describe('Testes de integração (API) | Conta', () => {
   })
 })
 
-describe("Testes de integração (API) | Transação", () => {
+describe("Testes de integração (API) | Transação", () => {  
   test("Deve criar uma nova transacao com forma de pagamento PIX", async () => {
+    const conta = await axios.get("http://localhost:3333/conta", { params: { id: CONTA_ID_PADRAO }})
+    const valorTransacao = 2.99
+    const valorSaldoInicialConta = conta.data.saldo
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoPix()
     const response = await axios.post("http://localhost:3333/transacao",
       {
         forma_pagamento: "P",
-        conta_id: 4477,
-        valor: 50
+        conta_id: CONTA_ID_PADRAO,
+        valor: valorTransacao
       }
     )
     const output = response.data
-    expect(output.saldo).toBe(450)
-    expect(output.conta_id).toBe(4477)
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_PIX / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - valorTransacao - valorTaxaTransacao
+    expect(output.saldo).toBe(valorSaldoFinalConta)
+    expect(output.conta_id).toBe(CONTA_ID_PADRAO)
     expect(response.status).toBe(201)
   })  
+
+  test("Deve criar uma nova transacao com forma de pagamento CREDITO aplicando a taxa da transacao", async () => {
+    const conta = await axios.get("http://localhost:3333/conta", { params: { id: CONTA_ID_PADRAO }})    
+    const valorTransacao = 50
+    const valorSaldoInicialConta = conta.data.saldo
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoCredito()
+    const response = await axios.post("http://localhost:3333/transacao",
+      {
+        forma_pagamento: "C",
+        conta_id: CONTA_ID_PADRAO,
+        valor: valorTransacao
+      }
+    )
+    const output = response.data
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_CREDITO / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - (valorTransacao + valorTaxaTransacao)
+    expect(output.saldo).toBe(valorSaldoFinalConta)
+    expect(output.conta_id).toBe(CONTA_ID_PADRAO)
+    expect(response.status).toBe(201)
+  }) 
+
+  test("Deve criar uma nova transacao com forma de pagamento DEBITO aplicando a taxa da transacao", async () => {
+    const conta = await axios.get("http://localhost:3333/conta", { params: { id: CONTA_ID_PADRAO }})    
+    const valorTransacao = 32.78
+    const valorSaldoInicialConta = conta.data.saldo
+    const calculadoraTaxaTransacao = new CalculadoraTaxaTransacaoDebito()
+    const response = await axios.post("http://localhost:3333/transacao",
+      {
+        forma_pagamento: "D",
+        conta_id: CONTA_ID_PADRAO,
+        valor: valorTransacao
+      }
+    )
+    const output = response.data
+    const valorTaxaTransacao = valorTransacao * (calculadoraTaxaTransacao.TAXA_DEBITO / 100)
+    const valorSaldoFinalConta = valorSaldoInicialConta - (valorTransacao + valorTaxaTransacao)
+    expect(output.saldo).toBe(valorSaldoFinalConta)
+    expect(output.conta_id).toBe(CONTA_ID_PADRAO)
+    expect(response.status).toBe(201)
+  }) 
 
   test("Deve lançar 404 se não houver saldo ao criar nova transação", async () => {        
     const response = await axios.post("http://localhost:3333/transacao", {
       forma_pagamento: "P",
-      conta_id: 4477,
+      conta_id: CONTA_ID_PADRAO,
       valor: 1500
     })
     expect(response.data).toBe("Saldo insuficiente")
@@ -127,7 +178,7 @@ describe("Testes de integração (API) | Transação", () => {
   test("Deve lançar erro 400 se informado uma forma de pagamento inválido", async () => {    
     const response = await axios.post("http://localhost:3333/transacao", {
       forma_pagamento: "QW",
-      conta_id: 4477,
+      conta_id: CONTA_ID_PADRAO,
       valor: 15
     })      
     expect(response.data).toBe("Forma de pagamento inválido")

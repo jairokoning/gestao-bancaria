@@ -8,7 +8,7 @@ test("Deve criar uma nova transacao", () => {
   expect(transacao.valor).toBe(18.90)
 })
 
-test("Deve validar as forma de pagamento", () => {  
+test("Deve validar as formas de pagamento", () => {  
   const formaPagamentoPixValido = Transacao.formaDePagamentoValido("P")
   const formaPagamentoDebitoValido = Transacao.formaDePagamentoValido("C")
   const formaPagamentoCreditoValido = Transacao.formaDePagamentoValido("D")
